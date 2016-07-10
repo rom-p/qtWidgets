@@ -2,8 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QBasicTimer>      // timer is used to simulate changing signal volume over time
 #include "qanimatedtimer.h"
-//#include "qvumeter.h"
+#include "qvumeter.h"
 
 namespace Ui
 {
@@ -20,6 +21,7 @@ public:
     ~MainWindow();
 
 public Q_SLOTS:
+    // animated timer section
     void onStartClicked();
     void onStopClicked();
     void onPauseClicked();
@@ -27,13 +29,23 @@ public Q_SLOTS:
     void onYellowChanged(int); // user changes the yellow threshold
     void onRedChanged(int);    // user changes the red threshold
 
+    // vu meter section
+    void onEnableVU();
+    void onDisableVU();
+    void onPlayVU();
+    void onSelectionChanged(float);
+
 protected:
-    void resizeEvent(QResizeEvent *);
+    //void resizeEvent(QResizeEvent *);
     void recalcLabels();
+
+    void timerEvent(QTimerEvent *event); // Q_DECL_OVERRIDE;
 
 private:
     Ui::MainWindow *ui;
     bool _timerVisible;
+    bool _vuPlaying;
+    QBasicTimer _vuClock;
 };
 
 #endif // MAINWINDOW_H

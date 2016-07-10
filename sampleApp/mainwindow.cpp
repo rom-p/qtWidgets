@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , _timerVisible(true)
+    , _vuPlaying(false)
 {
     ui->setupUi(this);
 
@@ -15,12 +16,19 @@ MainWindow::MainWindow(QWidget *parent)
     ui->_redThreshold->setValue(ui->_timer->redThreshold());
     recalcLabels();
 
+    // animated timer section
     connect(ui->_start, SIGNAL(clicked()), this, SLOT(onStartClicked()));
     connect(ui->_stop, SIGNAL(clicked()), this, SLOT(onStopClicked()));
     connect(ui->_pause, SIGNAL(clicked()), this, SLOT(onPauseClicked()));
     connect(ui->_fade, SIGNAL(clicked()), this, SLOT(onFadeClicked()));
     connect(ui->_yellowThreshold, SIGNAL(valueChanged(int)), this, SLOT(onYellowChanged(int)));
     connect(ui->_redThreshold, SIGNAL(valueChanged(int)), this, SLOT(onRedChanged(int)));
+
+    // vu meter section
+    connect(ui->_enable, SIGNAL(clicked()), this, SLOT(onEnableVU()));
+    connect(ui->_disable, SIGNAL(clicked()), this, SLOT(onDisableVU()));
+    connect(ui->_play, SIGNAL(clicked()), this, SLOT(onPlayVU()));
+    connect(ui->_vuMeter, SIGNAL(selectionChanged(float)), this, SLOT(onSelectionChanged(float)));
 }
 
 
@@ -50,15 +58,14 @@ void MainWindow::onPauseClicked()
 
 void MainWindow::onFadeClicked()
 {
+    ui->_fade->setText(_timerVisible ? "Fade In" : "Fade Out");
     if (_timerVisible)
     {
         ui->_timer->fadeOut(ui->_fadeDuration->value());
-        ui->_fade->setText("Fade In");
     }
     else
     {
         ui->_timer->fadeIn(ui->_fadeDuration->value());
-        ui->_fade->setText("Fade Out");
     }
     _timerVisible = !_timerVisible;
 }
@@ -86,13 +93,35 @@ void MainWindow::onRedChanged(int val)
 }
 
 
-void MainWindow::resizeEvent(QResizeEvent */*pEvent*/)
+void MainWindow::onEnableVU()
 {
-    QRect sz;
-    QRect g = ui->_fieldSpacer->geometry();
+    ui->_vuMeter->setDimmed(false);
+}
 
-    sz.setRect((g.width() - 80) / 2, (g.height() - 80) / 2, 80, 80);
-    ui->_timer->setGeometry(sz);
+
+void MainWindow::onDisableVU()
+{
+    ui->_vuMeter->setDimmed(true);
+}
+
+
+void MainWindow::onPlayVU()
+{
+    _vuClock.start(100, this);
+}
+
+
+void MainWindow::onSelectionChanged(float val)
+{
+    ui->_selection->setText(QString::number(val));
+}
+
+
+void MainWindow::timerEvent(QTimerEvent *event)
+{
+    static float val = 0;
+    val = qBound(0.f, val + rand() % 30 - 15, 100.f);
+    ui->_vuMeter->setValue(val);
 }
 
 
