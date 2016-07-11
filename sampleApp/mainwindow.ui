@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>sample app</string>
+   <string>qtWidgets sample app</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -98,7 +98,7 @@
          </spacer>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="layout_animatedTimerButtons">
+         <layout class="QHBoxLayout" name="layout_animatedTimerControls">
           <item>
            <widget class="QPushButton" name="_start">
             <property name="text">
@@ -175,11 +175,12 @@
         </item>
        </layout>
       </widget>
+
       <widget class="QWidget" name="tab_vuMeter">
        <attribute name="title">
         <string>QVUMeter</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="layout_vuMeterStack">
         <item>
          <widget class="QVUMeter" name="_vuMeter" native="true">
           <property name="minimumSize">
@@ -212,23 +213,16 @@
            </spacer>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <layout class="QHBoxLayout" name="layout_vuMeterControls">
             <item>
-             <widget class="QPushButton" name="_enable">
+             <widget class="QPushButton" name="_dimVU">
               <property name="text">
-               <string>Enable</string>
+               <string>Dim</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="_disable">
-              <property name="text">
-               <string>Disable</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="_play">
+             <widget class="QPushButton" name="_playVU">
               <property name="text">
                <string>Play</string>
               </property>
@@ -237,7 +231,7 @@
             <item>
              <widget class="QLabel" name="_selection">
               <property name="text">
-               <string>TextLabel</string>
+               <string>selection: </string>
               </property>
              </widget>
             </item>

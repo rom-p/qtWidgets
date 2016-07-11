@@ -30,15 +30,12 @@ public Q_SLOTS:
     void onRedChanged(int);    // user changes the red threshold
 
     // vu meter section
-    void onEnableVU();
-    void onDisableVU();
-    void onPlayVU();
+    void onDimVUClicked();
+    void onPlayVUClicked();
     void onSelectionChanged(float);
 
 protected:
-    //void resizeEvent(QResizeEvent *);
     void recalcLabels();
-
     void timerEvent(QTimerEvent *event); // Q_DECL_OVERRIDE;
 
 private:

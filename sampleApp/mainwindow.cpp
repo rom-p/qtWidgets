@@ -25,9 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->_redThreshold, SIGNAL(valueChanged(int)), this, SLOT(onRedChanged(int)));
 
     // vu meter section
-    connect(ui->_enable, SIGNAL(clicked()), this, SLOT(onEnableVU()));
-    connect(ui->_disable, SIGNAL(clicked()), this, SLOT(onDisableVU()));
-    connect(ui->_play, SIGNAL(clicked()), this, SLOT(onPlayVU()));
+    connect(ui->_dimVU, SIGNAL(clicked()), this, SLOT(onDimVUClicked()));
+    connect(ui->_playVU, SIGNAL(clicked()), this, SLOT(onPlayVUClicked()));
     connect(ui->_vuMeter, SIGNAL(selectionChanged(float)), this, SLOT(onSelectionChanged(float)));
 }
 
@@ -37,6 +36,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+// animated timer section
 
 void MainWindow::onStartClicked()
 {
@@ -93,38 +94,6 @@ void MainWindow::onRedChanged(int val)
 }
 
 
-void MainWindow::onEnableVU()
-{
-    ui->_vuMeter->setDimmed(false);
-}
-
-
-void MainWindow::onDisableVU()
-{
-    ui->_vuMeter->setDimmed(true);
-}
-
-
-void MainWindow::onPlayVU()
-{
-    _vuClock.start(100, this);
-}
-
-
-void MainWindow::onSelectionChanged(float val)
-{
-    ui->_selection->setText(QString::number(val));
-}
-
-
-void MainWindow::timerEvent(QTimerEvent *event)
-{
-    static float val = 0;
-    val = qBound(0.f, val + rand() % 30 - 15, 100.f);
-    ui->_vuMeter->setValue(val);
-}
-
-
 void MainWindow::recalcLabels()
 {
     QString yellow("yellow zone starts at ");
@@ -138,3 +107,43 @@ void MainWindow::recalcLabels()
     ui->_redLabel->setText(red);
 }
 
+
+// vu meter section
+
+void MainWindow::onDimVUClicked()
+{
+    ui->_vuMeter->setDimmed(!ui->_vuMeter->dimmed());
+    ui->_dimVU->setText(ui->_vuMeter->dimmed() ? "Undim (enable)" : "Dim (disable)");
+}
+
+
+void MainWindow::onPlayVUClicked()
+{
+    if (_vuPlaying)
+    {
+        _vuClock.stop();
+        ui->_vuMeter->setValue(0);
+    }
+    else
+    {
+        _vuClock.start(100, this);
+    }
+    _vuPlaying = !_vuPlaying;
+    ui->_playVU->setText(_vuPlaying ? "Stop" : "Play");
+}
+
+
+void MainWindow::onSelectionChanged(float val)
+{
+    QString selection("selection: ");
+    selection.append(QString::number(val));
+    ui->_selection->setText(selection);
+}
+
+
+void MainWindow::timerEvent(QTimerEvent * /*event*/)
+{
+    static float val = 0;
+    val = qBound(0.f, val + rand() % 30 - 15, 100.f);
+    ui->_vuMeter->setValue(val);
+}
