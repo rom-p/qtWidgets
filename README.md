@@ -5,7 +5,7 @@
 
 this is a small collection of custom Qt widgets.  Included here are:
 
-| widget | sample |
+| widget | screenshot |
 | --- | :---: |
 | The **QAnimatedTimer** provides a "hourglass"-like animation that displays time elapsed and can automatically change its color at predefined time to indicate processes that take longer than expected.  Number of dots is adjustable.  Additionally, it can either switch on/off or fade in/out for smoother transitions. | <img src="https://raw.githubusercontent.com/rom-p/qtWidgets/master/doc/atimer.gif" width="112px" height="112px" /> |
 | The **QVUMeter** provides a vertical VU Meter (or volume meter) similar to indicators that can be found on professional or semi-professional audio hardware.  The size of the dots, the range and yellow-red thresholds are adjustable.  It can be dimmed to indicate inactivity.  User can mark a point to indicate, for example, a threshold level. | ![QVUMeter screenshot](https://raw.githubusercontent.com/rom-p/qtWidgets/master/doc/vumeter.gif) |
